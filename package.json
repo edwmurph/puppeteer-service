@@ -1,0 +1,24 @@
+{
+  "name": "puppeteer-service",
+  "version": "1.0.0",
+  "description": "Puppeteer as a service",
+  "main": "index.js",
+  "author": "edwmurph",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@cliqz/adblocker-puppeteer": "1.20.6",
+    "express": "4.17.1",
+    "puppeteer": "9.1.1"
+  },
+  "devDependencies": {
+    "@edwmurph/eslint-config": "0.0.14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwmurph/puppeteer-service.git"
+  }
+}
