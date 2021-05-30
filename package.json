@@ -7,17 +7,25 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
+    "dev": "nodemon index.js",
+    "fn": "./scripts/fn.sh",
     "lint": "eslint ."
   },
   "dependencies": {
     "@cliqz/adblocker-puppeteer": "1.20.6",
     "@koa/router": "10.0.0",
+    "axios": "0.21.1",
+    "cross-fetch": "3.1.4",
+    "dotenv": "10.0.0",
     "http-errors": "1.8.0",
     "koa": "2.13.1",
-    "puppeteer": "9.1.1"
+    "puppeteer": "9.1.1",
+    "querystring": "0.2.1",
+    "which": "2.0.2"
   },
   "devDependencies": {
-    "@edwmurph/eslint-config": "0.0.14"
+    "@edwmurph/eslint-config": "0.0.14",
+    "nodemon": "2.0.7"
   },
   "repository": {
     "type": "git",
