@@ -1,18 +1,20 @@
-require('../../lib/util/load-env')();
+require('../../lib/util/load-env')({
+  required: [
+    'TARGET',
+    'PUPPETEER_HOST',
+    'DIFF_THRESHOLD',
+  ],
+});
 
 const fs = require('fs');
 const axios = require('axios');
 const qs = require('querystring');
 const pngDiff = require('../../lib/util/png-diff');
+const discord = require('../../lib/util/discord');
 
 const {
   TARGET,
-  PUPPETEER_HOST,
 } = process.env;
-
-if ( [ TARGET, PUPPETEER_HOST ].some( val => !val ) ) {
-  throw new Error('missing required env var');
-}
 
 const prevImagePath = './local/prev.png';
 const diffImagePath = './local/diff.png';
@@ -39,7 +41,27 @@ const screenshotDiffAlert = async() => {
       fs.writeFileSync(diffImagePath, diff.image);
     }
 
-    console.log( 'different pixels:', diff.pixels );
+    if (diff.pixels) {
+      console.log(`${diff.pixels} pixels changed on: ${TARGET}`);
+
+      if ( diff.image ) {
+        if ( discord.enabled ) {
+          await discord.webhook.send(`Change detected on: ${TARGET}`, {
+            embeds: [{
+              thumbnail: {
+                url: `attachment://${Date.now()}.png`,
+              },
+            }],
+            files: [{
+              attachment: diffImagePath,
+              name: `${Date.now()}.png`,
+            }],
+          });
+
+          console.log('posted change to discord');
+        }
+      }
+    }
   } else {
     console.log('skipping diff calculationg because previous screenshot didnt exist');
   }
@@ -47,4 +69,6 @@ const screenshotDiffAlert = async() => {
   fs.writeFileSync(prevImagePath, next, { encoding: null });
 };
 
-screenshotDiffAlert().catch( console.error.bind('top level function error\n\n') );
+screenshotDiffAlert()
+  .catch( console.error.bind('top level function error\n\n') )
+  .finally(() => process.exit(0));
