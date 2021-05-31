@@ -14,6 +14,7 @@ const discord = require('../../lib/util/discord');
 
 const {
   TARGET,
+  EXTRA_WAIT = '',
 } = process.env;
 
 const prevImagePath = './local/prev.png';
@@ -22,9 +23,14 @@ const diffImagePath = './local/diff.png';
 const screenshotDiffAlert = async() => {
   console.log(`fetching screenshot for ${ TARGET }`);
 
+  const query = qs.stringify({
+    url: TARGET,
+    extraWait: EXTRA_WAIT,
+  });
+
   const res = await axios({
     method: 'GET',
-    url: `/screenshot?${ qs.stringify({ url: TARGET }) }`,
+    url: `/screenshot?${ query }`,
     responseType: 'arraybuffer',
   });
 
