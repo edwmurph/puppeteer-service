@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
     "fn": "./scripts/fn.sh",
     "lint": "eslint ."
   },
@@ -20,6 +20,7 @@
     "dotenv": "10.0.0",
     "http-errors": "1.8.0",
     "koa": "2.13.1",
+    "p-queue": "6.6.2",
     "pixelmatch": "5.2.1",
     "pngjs": "6.0.0",
     "puppeteer": "9.1.1",

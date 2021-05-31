@@ -1,3 +1,9 @@
+require('./lib/util/load-env')({
+  required: [
+    'MAX_PAGES',
+  ],
+});
+
 const app = require('./lib/app');
 
 app.start().catch( console.error.bind( 'error starting app:' ) );
