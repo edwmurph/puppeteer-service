@@ -1,0 +1,30 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup packages
+        run: sudo apt install -y qemu-user-static binfmt-support
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+      - name: Setup build
+        run: touch buildkitd.toml
+
+      - name: Build & push image
+        env:
+          REGISTRY: ghcr.io/${{ github.repository_owner }}
+          REPO: puppeteer-service
+        run: |
+          docker buildx create --use --config=buildkitd.toml
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t $REGISTRY/$REPO --push .

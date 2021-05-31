@@ -23,8 +23,7 @@
     "pixelmatch": "5.2.1",
     "pngjs": "6.0.0",
     "puppeteer": "9.1.1",
-    "querystring": "0.2.1",
-    "which": "2.0.2"
+    "querystring": "0.2.1"
   },
   "devDependencies": {
     "@edwmurph/eslint-config": "0.0.14",
