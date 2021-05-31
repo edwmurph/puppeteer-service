@@ -70,5 +70,8 @@ const screenshotDiffAlert = async() => {
 };
 
 screenshotDiffAlert()
-  .catch( console.error.bind('top level function error\n\n') )
-  .finally(() => process.exit(0));
+  .then(() => process.exit(0))
+  .catch( ex => {
+    console.error('top level function error\n\n', ex);
+    process.exit(1);
+  });
