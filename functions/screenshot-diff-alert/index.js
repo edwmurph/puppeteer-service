@@ -41,25 +41,25 @@ const screenshotDiffAlert = async() => {
       fs.writeFileSync(diffImagePath, diff.image);
     }
 
-    if (diff.pixels) {
-      console.log(`${diff.pixels} pixels changed on: ${TARGET}`);
+    console.log(`${diff.pixels} pixels changed on: ${TARGET}`);
 
-      if ( diff.image ) {
-        if ( discord.enabled ) {
-          await discord.webhook.send(`Change detected on: ${TARGET}`, {
-            embeds: [{
-              thumbnail: {
-                url: `attachment://${Date.now()}.png`,
-              },
-            }],
-            files: [{
+    if (diff.pixels) {
+      if ( discord.enabled ) {
+        await discord.webhook.send(`Change detected on: ${TARGET}`, {
+          embeds: [{
+            thumbnail: {
+              url: `attachment://${Date.now()}.png`,
+            },
+          }],
+          files: diff.image
+            ? [{
               attachment: diffImagePath,
               name: `${Date.now()}.png`,
-            }],
-          });
+            }]
+            : [],
+        });
 
-          console.log('posted change to discord');
-        }
+        console.log('posted change to discord');
       }
     }
   } else {
