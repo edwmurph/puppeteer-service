@@ -7,4 +7,10 @@ else
   exit 1
 fi
 
+if [ -n "$MAX_RANDOM_START_DELAY" ]; then
+  delay=$(node -e "console.log(Math.floor(Math.random() * $MAX_RANDOM_START_DELAY) + 1)")
+  echo "random start delay: $delay"
+  sleep $delay
+fi
+
 node "./functions/$1"
