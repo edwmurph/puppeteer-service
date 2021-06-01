@@ -4,6 +4,7 @@ require('./lib/util/load-env')({
   ],
 });
 
+const log = require('@starryinternet/jobi');
 const app = require('./lib/app');
 
-app.start().catch( console.error.bind( 'error starting app:' ) );
+app.start().catch( log.error.bind( 'error starting app:' ) );

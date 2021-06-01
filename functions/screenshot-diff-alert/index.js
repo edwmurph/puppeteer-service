@@ -7,6 +7,7 @@ require('../../lib/util/load-env')({
 });
 
 const fs = require('fs');
+const log = require('@starryinternet/jobi');
 const axios = require('axios');
 const qs = require('querystring');
 const pngDiff = require('../../lib/util/png-diff');
@@ -21,7 +22,7 @@ const prevImagePath = './local/prev.png';
 const diffImagePath = './local/diff.png';
 
 const screenshotDiffAlert = async() => {
-  console.log(`fetching screenshot for ${ TARGET }`);
+  log.info(`fetching screenshot for ${ TARGET }`);
 
   const query = qs.stringify({
     url: TARGET,
@@ -37,7 +38,7 @@ const screenshotDiffAlert = async() => {
   const next = res.data;
 
   if (fs.existsSync( prevImagePath )) {
-    console.log('comparing screenshots');
+    log.info('comparing screenshots');
 
     const prev = fs.readFileSync( prevImagePath );
 
@@ -47,7 +48,7 @@ const screenshotDiffAlert = async() => {
       fs.writeFileSync(diffImagePath, diff.image);
     }
 
-    console.log(`${diff.pixels} pixels changed on: ${TARGET}`);
+    log.info(`${diff.pixels} pixels changed on: ${TARGET}`);
 
     if (diff.pixels) {
       if ( discord.enabled ) {
@@ -65,11 +66,11 @@ const screenshotDiffAlert = async() => {
             : [],
         });
 
-        console.log('posted change to discord');
+        log.info('posted change to discord');
       }
     }
   } else {
-    console.log('skipping diff calculationg because previous screenshot didnt exist');
+    log.info('skipping diff calculationg because previous screenshot didnt exist');
   }
 
   fs.writeFileSync(prevImagePath, next, { encoding: null });
