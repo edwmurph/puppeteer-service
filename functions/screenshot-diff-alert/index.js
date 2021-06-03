@@ -12,6 +12,7 @@ const axios = require('axios');
 const qs = require('querystring');
 const pngDiff = require('../../lib/util/png-diff');
 const discord = require('../../lib/util/discord');
+const formatAxiosError = require('../../lib/util/format-axios-error');
 
 const {
   TARGET,
@@ -79,6 +80,6 @@ const screenshotDiffAlert = async() => {
 screenshotDiffAlert()
   .then(() => process.exit(0))
   .catch( ex => {
-    console.error('top level function error\n\n', ex);
+    console.error('top level function error\n\n', ex.stack, formatAxiosError( ex ));
     process.exit(1);
   });
