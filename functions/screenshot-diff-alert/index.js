@@ -12,6 +12,7 @@ const axios = require('axios');
 const qs = require('querystring');
 const pngDiff = require('../../lib/util/png-diff');
 const discord = require('../../lib/util/discord');
+const retry = require('../../lib/util/retry');
 const formatAxiosError = require('../../lib/util/format-axios-error');
 
 const {
@@ -30,11 +31,13 @@ const screenshotDiffAlert = async() => {
     extraWait: EXTRA_WAIT,
   });
 
-  const res = await axios({
+  const getScreenshot = () => axios({
     method: 'GET',
     url: `/screenshot?${ query }`,
     responseType: 'arraybuffer',
   });
+
+  const res = await retry( getScreenshot );
 
   const next = res.data;
 
@@ -80,6 +83,6 @@ const screenshotDiffAlert = async() => {
 screenshotDiffAlert()
   .then(() => process.exit(0))
   .catch( ex => {
-    console.error('top level function error\n\n', ex.stack, formatAxiosError( ex ));
+    log.error('top level function error\n\n', ex.stack, formatAxiosError( ex ));
     process.exit(1);
   });
